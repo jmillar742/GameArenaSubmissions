@@ -2,7 +2,7 @@ public class HorseGodzilla
 {
     public static void main(String[] args)
     {
-        GameArena arena = new GameArena(500, 300);
+        GameArena arena = new GameArena(2400, 900);
         /*Ball b = new Ball(250, 150, 20, "GREEN");
 
         arena.addBall(b);
@@ -12,14 +12,23 @@ public class HorseGodzilla
             arena.pause();
         }
         */
-        Player James = new Player(200, 200);
-        Barrel Bar1 = new Barrel(400, 200);
-        int barDirection = 3;
+        Player James = new Player(1000, 800);
+        //Barrel BarrelList[0] = new Barrel(2000, 800);
+        Barrel[] BarrelList;
+        int NumOfBarrels = 5;
+        BarrelList = new Barrel[NumOfBarrels];
+        for(int i = 0; i < NumOfBarrels; i++)
+        {
+            BarrelList[i] = new Barrel(2000, 800);
+        }
+        
+        BarrelList[0].setDirection(3);
         boolean jump = false;
         int barLoc1 = 0;
         int barLoc2 = 0;
+        int currentBarrelCount = 1;
         James.addTo(arena);
-        Bar1.addTo(arena);
+        BarrelList[0].addTo(arena);
         while(true)
         {
             
@@ -46,15 +55,15 @@ public class HorseGodzilla
             {
                 if(arena.spacePressed())
                 {
-                    barLoc1 = Bar1.GetXLoc();
-                    if(barDirection == 1)
+                    barLoc1 = BarrelList[0].GetXLoc();
+                    if(BarrelList[0].getDirection() == 1)
                     {
                     
-                        barLoc2 = barLoc1 + 80;
+                        barLoc2 = barLoc1 + 80 * BarrelList[0].getSpeed();
                     }
                     else
                     {
-                        barLoc2 = barLoc1 - 80;
+                        barLoc2 = barLoc1 - 80 * BarrelList[0].getSpeed();
                     }
                     jump = true;
                     James.move(4);
@@ -66,35 +75,60 @@ public class HorseGodzilla
             }
             if(jump)
             {
-                if(Bar1.GetXLoc() == barLoc2)
+                if(BarrelList[0].GetXLoc() == barLoc2)
                 {
                     jump = false;
                     James.move(5);
                 }
-            }
+            } 
             
-            /*if(Bar1.GetXLoc() > 0 && barDirection != 1)
+            
+            
+            /*if(BarrelList[0].GetXLoc() > 0 && barDirection != 1)
             {
                 barDirection = 3;
                 
             }
-            else if(Bar1.GetXLoc() < 500 && barDirection != 3)
+            else if(BarrelList[0].GetXLoc() < 500 && barDirection != 3)
             {
 
             } */
-            if(Bar1.GetXLoc() == 0)
+            for(Barrel b : BarrelList)
             {
-                barDirection = 1;
+                if(b.GetXLoc() <= 400)
+                {
+                    b.setDirection(1);
+                    b.SpeedUp();
+                }
+                if (b.GetXLoc() >= 2000)
+                {
+                    b.setDirection(3);
+                    b.SpeedUp();
+                }
+                b.move();
+                
+                if(b.collides(James.getBody()))
+                {
+                    b.setXLoc(2000);
+                    b.setSpeed(1);
+                }
+                
             }
-            if (Bar1.GetXLoc() == 500)
+            if(BarrelList[0].getSpeed() >= 12) // end of level, adds another barrel
             {
-                barDirection = 3;
+                currentBarrelCount++; 
+                for(int j = 0; j < currentBarrelCount; j++)
+                {
+                    BarrelList[j].removeFrom(arena);
+                    BarrelList[j].setSpeed(currentBarrelCount-j);
+                    BarrelList[j].addTo(arena);
+                }
+                                 
+
+                
             }
-            Bar1.move(barDirection);
-            if(Bar1.collides(James.getBody()))
-            {
-                Bar1.setXLoc(500);
-            }
+            
+            
             
             arena.pause();
             

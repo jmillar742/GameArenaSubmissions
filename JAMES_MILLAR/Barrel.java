@@ -1,7 +1,9 @@
 public class Barrel
 {
+    private int direction;
     private int xLoc;
     private int yLoc;
+    private int speed = 1;
     private Rectangle bHead = new Rectangle(xLoc, yLoc, 20, 20,"#D8A55F");
     public Barrel(int x, int y)
     {
@@ -14,26 +16,30 @@ public class Barrel
     {
         arena.addRectangle(bHead);
     }   
-    public void move(int Direction)
+    public void removeFrom(GameArena arena)
     {
-        if(Direction == 0)
+        arena.removeRectangle(bHead);
+    }
+    public void move()
+    {
+        if(direction == 0)
         {
             yLoc--;
-            bHead.setYPosition(yLoc);;
+            bHead.setYPosition(yLoc);
         }
-        else if(Direction == 1)
+        else if(direction == 1)
         {
-            xLoc++;
+            xLoc = xLoc + this.speed;
             bHead.setXPosition(xLoc);
         }
-        else if(Direction == 2)
+        else if(direction == 2)
         {
             yLoc++;
             bHead.setYPosition(yLoc);
         }
-        else if(Direction == 3)
+        else if(direction == 3)
         {
-            xLoc--;
+            xLoc = xLoc - this.speed;
             bHead.setXPosition(xLoc);
         }
     }
@@ -53,6 +59,26 @@ public class Barrel
     {
         yLoc = y;
 
+    }
+    public void SpeedUp()
+    {
+        speed+=1;
+    }
+    public int getSpeed()
+    {
+        return this.speed;
+    }
+    public void setSpeed(int v)
+    {
+        this.speed = v;
+    }
+    public void setDirection(int d)
+    {
+        this.direction = d;
+    }
+    public int getDirection()
+    {
+        return direction;
     }
     public boolean collides(Rectangle r)
     {

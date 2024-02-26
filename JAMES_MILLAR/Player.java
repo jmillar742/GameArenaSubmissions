@@ -1,5 +1,6 @@
-public class Player 
+public class Player
 {
+    
     private int xLoc;
     private int yLoc;
     private Rectangle Body = new Rectangle(xLoc, yLoc, 15, 40, "BLUE");
@@ -20,6 +21,7 @@ public class Player
     }   
     public void move(int Direction)
     {
+        
         if(Direction == 0)
         {
             yLoc--;
@@ -48,15 +50,14 @@ public class Player
         {
             yLoc -= 100;
             Head.setYPosition(yLoc - 10);
-            Body.setYPosition(yLoc);
-
+            Body.setYPosition(yLoc);        
         }
         else if(Direction == 5)
         {
             yLoc += 100;
             Head.setYPosition(yLoc - 10);
             Body.setYPosition(yLoc);
-        }
+        } 
     }
     public int GetXLoc()
     {
@@ -80,4 +81,5 @@ public class Player
     {
         return Body;
     }
+    
 }
